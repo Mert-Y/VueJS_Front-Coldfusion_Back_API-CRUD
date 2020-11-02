@@ -17,6 +17,8 @@
 	
 	<cffunction name="onRequest" >
 		<cfargument name="targetPage" type="string" >
+		<cfset ormreload()>
+		<cfinclude template="View/MainView.cfm" >
 	</cffunction>
 	
 	<cffunction name="onRequestEnd" >
