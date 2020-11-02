@@ -1,4 +1,6 @@
 <cfcomponent>
+	<cfobject type="component" name="usersDAO" component="workCube-Homework1-CRUD.DAO.UserDAO">
+
 	<cffunction name="setUser" access="remote" >
 		<cfargument name="name" type="string" required="true" >
 		<cfargument name="surname" type="string" required="true" >
@@ -6,13 +8,7 @@
 		<cfargument name="email" type="string" required="true" >
 		<cfargument name="address" type="string" required="true" >
 		
-		<cfset newUser = entityNew("User", {
-			name=arguments.name, 
-			surname=arguments.surname, 
-			phoneNumber=arguments.phoneNumber, 
-			email=arguments.email, 
-			address=arguments.address
-		})>
+		<cfset usersDAO.setUser(arguments.name, arguments.surname, arguments.phoneNumber, arguments.email, arguments.address)>
 	</cffunction>
 	
 	<cffunction name="updateUser" access="remote" >
@@ -23,42 +19,52 @@
 		<cfargument name="email" type="string">
 		<cfargument name="address" type="string">
 		
-		<cfset userToBeUpdated = getUser(id)>
+		<cfset userToBeUpdated = usersDAO.getUser(id)>
+		<cfset performUpdate = false>
 		
-		<cfif isDefined(arguments.name)>
+		<cfif isDefined(arguments.name) AND userToBeUpdated.getName NEQ arguments.name>
 			<cfset userToBeUpdated.setName(arguments.name)>
+			<cfset performUpdate = true>
 		</cfif>
-		<cfif isDefined(arguments.surname)>
+		
+		<cfif isDefined(arguments.surname) AND userToBeUpdated.getSurname NEQ arguments.surname>
 			<cfset userToBeUpdated.setName(arguments.surname)>
+			<cfset performUpdate = true>
 		</cfif>
-		<cfif isDefined(arguments.phoneNumber)>
+		
+		<cfif isDefined(arguments.phoneNumber) AND userToBeUpdated.getPhoneNumber NEQ arguments.phoneNumber>
 			<cfset userToBeUpdated.setName(arguments.phoneNumber)>
+			<cfset performUpdate = true>
 		</cfif>
-		<cfif isDefined(arguments.email)>
+		
+		<cfif isDefined(arguments.email) AND userToBeUpdated.getEmail NEQ arguments.email>
 			<cfset userToBeUpdated.setName(arguments.email)>
+			<cfset performUpdate = true>
 		</cfif>
-		<cfif isDefined(arguments.address)>
+		
+		<cfif isDefined(arguments.address) AND userToBeUpdated.getAddress NEQ arguments.address>
 			<cfset userToBeUpdated.setName(arguments.address)>
+			<cfset performUpdate = true>
 		</cfif>
-		<cfset entitySave(userToBeUpdated)>
+		
+		<cfif performUpdate>
+			<cfset usersDAO.updateUser(id)>
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getUser" access="remote" >
 		<cfargument name="id" type="string" required="true" >
 		
-		<cfset ormflush()>
-		<cfreturn entityLoad("User", arguments.id)>
+		<cfreturn usersDAO.getUser(arguments.id)>
 	</cffunction>
 	
 	<cffunction name="deleteUser" access="remote" >
 		<cfargument name="id" type="string" required="true" >
 		
-		<cfset ormflush()>
-		<cfset entityDelete(getUser(arguments.id))>
+		<cfreturn usersDAO.deleteUser(arguments.id)>
 	</cffunction>
 	
 	<cffunction name="getUsers" access="remote" >
-		<cfset ormflush()>
-		<cfreturn entityLoad("User")>
+		<cfreturn usersDAO.getUsers()>
 	</cffunction>
 </cfcomponent>
