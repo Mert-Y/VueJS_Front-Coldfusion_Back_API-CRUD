@@ -15,7 +15,7 @@
 		})>
 	</cffunction>
 	
-	<cffunction name="editUser" access="remote" >
+	<cffunction name="updateUser" access="remote" >
 		<cfargument name="id" type="string" required="true" >
 		<cfargument name="name" type="string">
 		<cfargument name="surname" type="string">
@@ -23,24 +23,24 @@
 		<cfargument name="email" type="string">
 		<cfargument name="address" type="string">
 		
-		<cfset userToBeEdited = getUser(id)>
+		<cfset userToBeUpdated = getUser(id)>
 		
 		<cfif isDefined(arguments.name)>
-			<cfset userToBeEdited.setName(arguments.name)>
+			<cfset userToBeUpdated.setName(arguments.name)>
 		</cfif>
 		<cfif isDefined(arguments.surname)>
-			<cfset userToBeEdited.setName(arguments.surname)>
+			<cfset userToBeUpdated.setName(arguments.surname)>
 		</cfif>
 		<cfif isDefined(arguments.phoneNumber)>
-			<cfset userToBeEdited.setName(arguments.phoneNumber)>
+			<cfset userToBeUpdated.setName(arguments.phoneNumber)>
 		</cfif>
 		<cfif isDefined(arguments.email)>
-			<cfset userToBeEdited.setName(arguments.email)>
+			<cfset userToBeUpdated.setName(arguments.email)>
 		</cfif>
 		<cfif isDefined(arguments.address)>
-			<cfset userToBeEdited.setName(arguments.address)>
+			<cfset userToBeUpdated.setName(arguments.address)>
 		</cfif>
-		<cfset entitySave(userToBeEdited)>
+		<cfset entitySave(userToBeUpdated)>
 	</cffunction>
 	
 	<cffunction name="getUser" access="remote" >
