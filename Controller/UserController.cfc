@@ -7,11 +7,11 @@
 		<cfargument name="address" type="string" required="true" >
 		
 		<cfset newUser = entityNew("User", {
-			name="#name#", 
-			surname="#surname#", 
-			phoneNumber="#phoneNumber#", 
-			email="#email#", 
-			address="#address#"
+			name=arguments.name, 
+			surname=arguments.surname, 
+			phoneNumber=arguments.phoneNumber, 
+			email=arguments.email, 
+			address=arguments.address
 		})>
 	</cffunction>
 	
@@ -25,36 +25,36 @@
 		
 		<cfset userToBeEdited = getUser(id)>
 		
-		<cfif isDefined("#name#")>
-			<cfset userToBeEdited.setName("#name#")>
+		<cfif isDefined(arguments.name)>
+			<cfset userToBeEdited.setName(arguments.name)>
 		</cfif>
-		<cfif isDefined("#surname#")>
-			<cfset userToBeEdited.setName("#surname#")>
+		<cfif isDefined(arguments.surname)>
+			<cfset userToBeEdited.setName(arguments.surname)>
 		</cfif>
-		<cfif isDefined("#phoneNumber#")>
-			<cfset userToBeEdited.setName("#phoneNumber#")>
+		<cfif isDefined(arguments.phoneNumber)>
+			<cfset userToBeEdited.setName(arguments.phoneNumber)>
 		</cfif>
-		<cfif isDefined("#email#")>
-			<cfset userToBeEdited.setName("#email#")>
+		<cfif isDefined(arguments.email)>
+			<cfset userToBeEdited.setName(arguments.email)>
 		</cfif>
-		<cfif isDefined("#address#")>
-			<cfset userToBeEdited.setName("#address#")>
+		<cfif isDefined(arguments.address)>
+			<cfset userToBeEdited.setName(arguments.address)>
 		</cfif>
-		<cfset newUser = entitySave(userToBeEdited)>
+		<cfset entitySave(userToBeEdited)>
 	</cffunction>
 	
 	<cffunction name="getUser" access="remote" >
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfset ormflush()>
-		<cfreturn entityLoad("User", id)>
+		<cfreturn entityLoad("User", arguments.id)>
 	</cffunction>
 	
 	<cffunction name="deleteUser" access="remote" >
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfset ormflush()>
-		<cfreturn entityDelete(getUser(id))>
+		<cfset entityDelete(getUser(arguments.id))>
 	</cffunction>
 	
 	<cffunction name="getUsers" access="remote" >
