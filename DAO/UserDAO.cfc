@@ -1,5 +1,5 @@
 <cfcomponent>
-	<cffunction name="setUser" access="remote" >
+	<cffunction name="addUser">
 		<cfargument name="name" type="string" required="true" >
 		<cfargument name="surname" type="string" required="true" >
 		<cfargument name="phoneNumber" type="string" required="true" >
@@ -15,7 +15,7 @@
 		})>
 	</cffunction>
 	
-	<cffunction name="updateUser" access="remote" >
+	<cffunction name="updateUser">
 		<cfargument name="id" type="string" required="true" >
 		<cfargument name="name" type="string">
 		<cfargument name="surname" type="string">
@@ -27,20 +27,20 @@
 		<cfset entitySave(userToBeUpdated)>
 	</cffunction>
 	
-	<cffunction name="getUser" access="remote" >
+	<cffunction name="getUser">
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfset ormflush()>
 		<cfreturn entityLoad("User", arguments.id)>
 	</cffunction>
 	
-	<cffunction name="deleteUser" access="remote" >
+	<cffunction name="deleteUser">
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfset entityDelete(getUser(arguments.id))>
 	</cffunction>
 	
-	<cffunction name="getUsers" access="remote" >
+	<cffunction name="getUsers">
 		<cfset ormflush()>
 		<cfreturn entityLoad("User")>
 	</cffunction>

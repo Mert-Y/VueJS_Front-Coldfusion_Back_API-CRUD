@@ -1,14 +1,14 @@
 <cfcomponent>
 	<cfobject type="component" name="usersDAO" component="workCube-Homework1-CRUD.DAO.UserDAO">
 
-	<cffunction name="setUser" access="remote" >
+	<cffunction name="addUser" access="remote" >
 		<cfargument name="name" type="string" required="true" >
 		<cfargument name="surname" type="string" required="true" >
 		<cfargument name="phoneNumber" type="string" required="true" >
 		<cfargument name="email" type="string" required="true" >
 		<cfargument name="address" type="string" required="true" >
 		
-		<cfset usersDAO.setUser(arguments.name, arguments.surname, arguments.phoneNumber, arguments.email, arguments.address)>
+		<cfset usersDAO.addUser(arguments.name, arguments.surname, arguments.phoneNumber, arguments.email, arguments.address)>
 	</cffunction>
 	
 	<cffunction name="updateUser" access="remote" >
