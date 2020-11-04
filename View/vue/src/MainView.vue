@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="wrap">
+    <div class="container">
       <div class="box">
         <UserForm />
       </div>
@@ -25,22 +25,17 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  box-sizing: border-box;
 }
-.wrap {
+.container {
   display: flex;
   height: 95vh;
 }
 .box {
   height: auto;
   width: 50vw;
-  background-color: gray;
-  overflow: scroll;
+  overflow: auto;
   padding: 10px;
   margin: 5px;
 }
