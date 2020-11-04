@@ -1,6 +1,7 @@
 <cfcomponent>
 	<cfobject type="component" name="usersDAO" component="workCube-Homework1-CRUD.DAO.UserDAO">
-
+	<cfheader name="Access-Control-Allow-Origin" value="*" />
+	
 	<cffunction name="addUser" access="remote" >
 		<cfargument name="name" type="string" required="true" >
 		<cfargument name="surname" type="string" required="true" >
@@ -52,7 +53,7 @@
 		</cfif>
 	</cffunction>
 	
-	<cffunction name="getUser" access="remote" >
+	<cffunction name="getUser" access="remote" returnFormat="json">
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfreturn usersDAO.getUser(arguments.id)>
@@ -64,7 +65,7 @@
 		<cfreturn usersDAO.deleteUser(arguments.id)>
 	</cffunction>
 	
-	<cffunction name="getUsers" access="remote" >
+	<cffunction name="getUsers" access="remote" returnFormat="json">
 		<cfreturn usersDAO.getUsers()>
 	</cffunction>
 </cfcomponent>

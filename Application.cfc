@@ -8,7 +8,7 @@
 	<cfset this.ormSettings = { autoGenMap=true, dbcreate = "dropcreate"}>
 	
 	<cffunction name="onSessionStart" >
-		<cfset ormreload()>
+		<!---<cfset ormreload()>--->
 	</cffunction>
 	
 	<cffunction name="onRequestStart" >
