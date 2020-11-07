@@ -1,18 +1,27 @@
-<cfcomponent>
+<cfcomponent rest="true">
 	<cfobject type="component" name="usersDAO" component="workCube-Homework1-CRUD.DAO.UserDAO">
-	<cfheader name="Access-Control-Allow-Origin" value="*" />
 	
-	<cffunction name="addUser" access="remote" >
-		<cfargument name="name" type="string" required="true" >
-		<cfargument name="surname" type="string" required="true" >
-		<cfargument name="phoneNumber" type="string" required="true" >
-		<cfargument name="email" type="string" required="true" >
-		<cfargument name="address" type="string" required="true" >
-		
-		<cfset usersDAO.addUser(arguments.name, arguments.surname, arguments.phoneNumber, arguments.email, arguments.address)>
+	<cffunction name="addUser" access="remote" httpmethod="POST">
+		<cfset data = deserializeJson(GetHttpRequestData().content)>
+		<cfif isDefined("data") AND 
+		StructKeyExists(data, "name") AND 
+		StructKeyExists(data, "surname") AND 
+		StructKeyExists(data, "phoneNumber") AND 
+		StructKeyExists(data, "email") AND 
+		StructKeyExists(data, "address")>
+			<cfset var id = usersDAO.addUser(data.name, data.surname, data.phoneNumber, data.email, data.address)>
+			<cfif isDefined("id")>
+				<cfheader statusCode="201" statusText="Successfully added User">
+				<cfheader name ="userID" value="#id#">
+			<cfelse>
+				<cfheader statusCode="400" statusText="One of the required arguments is not present">
+			</cfif>
+		<cfelse>
+			<cfheader statusCode="400" statusText="One of the required arguments is not present">
+		</cfif>
 	</cffunction>
 	
-	<cffunction name="updateUser" access="remote" >
+	<cffunction name="updateUser" access="remote" httpmethod="POST">
 		<cfargument name="id" type="string" required="true" >
 		<cfargument name="name" type="string">
 		<cfargument name="surname" type="string">
@@ -53,9 +62,9 @@
 		</cfif>
 	</cffunction>
 	
-	<cffunction name="getUser" access="remote" returnFormat="json">
+	<cffunction name="getUser" access="remote" returnFormat="json" httpmethod="GET">
 		<cfargument name="id" type="string" required="true" >
-		
+
 		<cfreturn usersDAO.getUser(arguments.id)>
 	</cffunction>
 	
@@ -65,7 +74,7 @@
 		<cfreturn usersDAO.deleteUser(arguments.id)>
 	</cffunction>
 	
-	<cffunction name="getUsers" access="remote" returnFormat="json">
+	<cffunction name="getUsers" access="remote" returnFormat="json" httpmethod="GET">
 		<cfreturn usersDAO.getUsers()>
 	</cffunction>
 </cfcomponent>

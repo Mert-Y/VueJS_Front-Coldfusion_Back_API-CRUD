@@ -6,13 +6,17 @@
 		<cfargument name="email" type="string" required="true" >
 		<cfargument name="address" type="string" required="true" >
 		
-		<cfset newUser = entityNew("User", {
+		<cfset var newUser = entityNew("User", {
 			name=arguments.name, 
 			surname=arguments.surname, 
 			phoneNumber=arguments.phoneNumber, 
 			email=arguments.email, 
 			address=arguments.address
 		})>
+		
+		<cfset entitySave(newUser)>
+		<cfset ormflush()>
+		<cfreturn newUser.getId()>
 	</cffunction>
 	
 	<cffunction name="updateUser">

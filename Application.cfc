@@ -7,12 +7,21 @@
 	<cfset this.ormenabled = "true">
 	<cfset this.ormSettings = { autoGenMap=true, dbcreate = "dropcreate"}>
 	
+	<cffunction name="onApplicationStart" >
+		<cfset ormreload()>
+		<cfobject type="component" name="users" component="workCube-Homework1-CRUD.DAO.UserDAO">
+		<cfset users.addUser("Zakk", "Atkins", "5236854521", "zakk@gmail.com", "address")>
+		<cfset users.addUser("Macaulay", "Sharples", "9535426851", "sharples@hotmail.com", "address2")>
+		<cfset users.addUser("Betty", "Heaton", "4578952141", "betty.heaton@gmail.com", "address3")>
+	</cffunction>
+
 	<cffunction name="onSessionStart" >
-		<!---<cfset ormreload()>--->
 	</cffunction>
 	
 	<cffunction name="onRequestStart" >
 		<cfargument name="targetPage" type="string" >
+		
+		
 	</cffunction>
 	
 	<cffunction name="onRequest" >
