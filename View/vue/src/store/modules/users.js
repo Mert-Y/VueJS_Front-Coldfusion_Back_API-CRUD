@@ -26,9 +26,37 @@ export default {
 
       commit("setUsers", response.data);
     },
+
+    async addUser(
+      { commit, state },
+      { name, surname, phoneNumber, email, address }
+    ) {
+      const response = await axios.post(
+        state.API.VUE_APP_USER_API + "?method=addUser",
+        {
+          name,
+          surname,
+          phoneNumber,
+          email,
+          address,
+        }
+      );
+
+      commit("newUser", {
+        id: response.headers.userid,
+        name,
+        surname,
+        phoneNumber,
+        email,
+        address,
+      });
+    },
   },
 
   mutations: {
     setUsers: (state, users) => (state.users = users),
+    newUser: (state, user) => {
+      state.users.push(user);
+    },
   },
 };

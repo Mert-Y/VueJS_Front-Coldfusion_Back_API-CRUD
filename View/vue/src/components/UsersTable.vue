@@ -1,6 +1,13 @@
 <template>
   <div>
-    <vue-good-table :columns="columns" :rows="rows" />
+    <vue-good-table :columns="columns" :rows="rows">
+      <template slot="table-row" slot-scope="props">
+        <span class="actions" v-if="props.column.field == 'actions'">
+          <a class="btn fas fa-edit" />
+          <a class="btn far fa-trash-alt" />
+        </span>
+      </template>
+    </vue-good-table>
   </div>
 </template>
 
@@ -37,11 +44,36 @@ export default {
         { label: "Surname", field: "surname" },
         { label: "Phone Number", field: "phoneNumber" },
         { label: "E-Mail", field: "email", type: "email" },
+        { label: "Address", field: "address" },
+        {
+          label: "Actions",
+          field: "actions",
+          sortable: false,
+          tdClass: "vgt-center-align",
+        },
       ],
       rows: [],
     };
   },
+  mounted() {
+    let recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute(
+      "src",
+      "https://kit.fontawesome.com/a076d05399.js"
+    );
+    document.head.appendChild(recaptchaScript);
+  },
 };
 </script>
 
-<style></style>
+<style scoped>
+.fas {
+  margin-right: 15px;
+}
+.far {
+  color: red;
+}
+a.btn:hover {
+  background-color: lightblue;
+}
+</style>

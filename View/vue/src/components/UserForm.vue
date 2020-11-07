@@ -1,32 +1,27 @@
 <template>
   <div class="wrapper">
     <div class="inner">
-      <form name="userForm" method="post">
+      <form name="userForm" method="post" @submit="onUserFormSubmit">
         <h3>User Form</h3>
         <div class="form-wrapper">
           <label>Name:</label>
-          <input type="text" class="form-control" />
+          <input v-model="name" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Surname:</label>
-          <input type="text" class="form-control" />
+          <input v-model="surname" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Phone Number:</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-            class="form-control"
-          />
+          <input v-model="phoneNumber" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>E-mail: </label>
-          <input type="email" class="form-control" />
+          <input v-model="email" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Address: </label>
-          <input type="text" name="address" id="address" class="form-control" />
+          <input v-model="address" type="text" class="form-control" />
         </div>
         <div class="btn-wrapper">
           <button id="userFormSubmitBtn" type="submit" value="Create">
@@ -42,8 +37,31 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "UserForm",
+  data() {
+    return {
+      name: "",
+      surname: "",
+      phoneNumber: "",
+      email: "",
+      address: "",
+    };
+  },
+  methods: {
+    ...mapActions(["addUser"]),
+    onUserFormSubmit(e) {
+      e.preventDefault();
+      this.addUser({
+        name: this.name,
+        surname: this.surname,
+        phoneNumber: this.phoneNumber,
+        email: this.email,
+        address: this.address,
+      });
+    },
+  },
 };
 </script>
 
