@@ -20,8 +20,6 @@
 	
 	<cffunction name="onRequestStart" >
 		<cfargument name="targetPage" type="string" >
-		
-		
 	</cffunction>
 	
 	<cffunction name="onRequest" >

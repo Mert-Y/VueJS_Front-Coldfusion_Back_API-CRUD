@@ -35,7 +35,7 @@
 		<cfargument name="id" type="string" required="true" >
 		
 		<cfset ormflush()>
-		<cfreturn entityLoad("User", arguments.id)>
+		<cfreturn entityLoad("User", arguments.id, "true")>
 	</cffunction>
 	
 	<cffunction name="deleteUser">
