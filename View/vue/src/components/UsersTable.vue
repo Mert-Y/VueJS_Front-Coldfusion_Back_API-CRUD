@@ -1,10 +1,21 @@
 <template>
   <div>
-    <vue-good-table :columns="columns" :rows="rows">
+    <vue-good-table
+      :columns="columns"
+      :rows="rows"
+      :row-style-class="rowStyleClassFn"
+      styleClass="vgt-table striped bordered"
+    >
       <template slot="table-row" slot-scope="props">
         <span class="actions" v-if="props.column.field == 'actions'">
-          <a class="btn fas fa-edit" />
+          <a
+            class="btn fas fa-edit"
+            v-on:click="onEditBtnClick(props.row.originalIndex)"
+          />
           <a class="btn far fa-trash-alt" />
+        </span>
+        <span v-else>
+          {{ props.formattedRow[props.column.field] }}
         </span>
       </template>
     </vue-good-table>
@@ -23,6 +34,19 @@ export default {
     async loadUsers() {
       await this.fetchUsers();
       this.rows = this.getUsers;
+    },
+    onEditBtnClick(ind) {
+      this.$emit("setUserForm", {
+        id: this.rows[ind].id,
+        name: this.rows[ind].name,
+        surname: this.rows[ind].surname,
+        phoneNumber: this.rows[ind].phoneNumber,
+        email: this.rows[ind].email,
+        address: this.rows[ind].address,
+      });
+    },
+    rowStyleClassFn() {
+      return "VGT-row";
     },
   },
 
@@ -48,7 +72,6 @@ export default {
         {
           label: "Actions",
           field: "actions",
-          sortable: false,
           tdClass: "vgt-center-align",
         },
       ],

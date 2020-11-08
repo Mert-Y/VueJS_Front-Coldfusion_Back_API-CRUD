@@ -51,6 +51,31 @@ export default {
         address,
       });
     },
+    async updateUser(
+      { commit, state },
+      { name, surname, phoneNumber, email, address }
+    ) {
+      //Implement later
+      const response = await axios.post(
+        state.API.VUE_APP_USER_API + "?method=updateUser",
+        {
+          name,
+          surname,
+          phoneNumber,
+          email,
+          address,
+        }
+      );
+
+      commit("newUser", {
+        id: response.headers.userid,
+        name,
+        surname,
+        phoneNumber,
+        email,
+        address,
+      });
+    },
   },
 
   mutations: {

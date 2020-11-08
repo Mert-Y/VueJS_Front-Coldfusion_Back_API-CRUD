@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div class="container">
-      <div class="box">
-        <UserForm />
+      <div class="form">
+        <UserForm ref="formComponent" />
       </div>
-      <div class="box">
-        <UsersTable />
+      <div class="table">
+        <UsersTable v-on:setUserForm="setUserForm" />
       </div>
     </div>
   </div>
@@ -21,6 +21,11 @@ export default {
     UserForm,
     UsersTable,
   },
+  methods: {
+    setUserForm: function (user) {
+      this.$refs.formComponent.setUserForm(user);
+    },
+  },
 };
 </script>
 
@@ -32,9 +37,16 @@ export default {
   display: flex;
   height: 95vh;
 }
-.box {
+.form {
   height: auto;
-  width: 50vw;
+  width: 40vw;
+  overflow: auto;
+  padding: 10px;
+  margin: 5px;
+}
+.table {
+  height: auto;
+  display: flex;
   overflow: auto;
   padding: 10px;
   margin: 5px;

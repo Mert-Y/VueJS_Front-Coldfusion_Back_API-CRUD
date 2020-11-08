@@ -27,7 +27,12 @@
           <button id="userFormSubmitBtn" type="submit" value="Create">
             Create
           </button>
-          <button id="userFormSubmitBtn" type="reset" value="Clear">
+          <button
+            id="userFormClearBtn"
+            type="reset"
+            value="Clear"
+            v-on:click="resetForm"
+          >
             Clear
           </button>
         </div>
@@ -38,10 +43,12 @@
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
   name: "UserForm",
   data() {
     return {
+      selectedID: -1,
       name: "",
       surname: "",
       phoneNumber: "",
@@ -50,16 +57,40 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["addUser"]),
+    ...mapActions(["addUser", "updateUser"]),
     onUserFormSubmit(e) {
       e.preventDefault();
-      this.addUser({
-        name: this.name,
-        surname: this.surname,
-        phoneNumber: this.phoneNumber,
-        email: this.email,
-        address: this.address,
-      });
+      var btnText = document.getElementById("userFormSubmitBtn").innerText;
+      if (btnText.toLowerCase() == "create") {
+        this.addUser({
+          name: this.name,
+          surname: this.surname,
+          phoneNumber: this.phoneNumber,
+          email: this.email,
+          address: this.address,
+        });
+      } else if (btnText.toLowerCase() == "update") {
+        console.log("Not implemented");
+      }
+    },
+    setUserForm(user) {
+      this.name = user.name;
+      this.surname = user.surname;
+      this.phoneNumber = user.phoneNumber;
+      this.email = user.email;
+      this.address = user.address;
+
+      this.selectedID = user.id;
+      document.getElementById("userFormSubmitBtn").innerText = "Update";
+    },
+    resetForm() {
+      this.selectedID = -1;
+      this.name = "";
+      this.surname = "";
+      this.phoneNumber = "";
+      this.email = "";
+      this.address = "";
+      document.getElementById("userFormSubmitBtn").innerText = "Create";
     },
   },
 };
@@ -98,9 +129,10 @@ button {
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   height: 100%;
+  padding-top: 60px;
 }
 
 .form-group {
