@@ -1,8 +1,9 @@
 <template>
   <div>
     <vue-good-table
+      ref="usersTable"
       :columns="columns"
-      :rows="rows"
+      :rows="getUsers"
       :row-style-class="rowStyleClassFn"
       styleClass="vgt-table striped bordered"
     >
@@ -12,7 +13,10 @@
             class="btn fas fa-edit"
             v-on:click="onEditBtnClick(props.row.originalIndex)"
           />
-          <a class="btn far fa-trash-alt" />
+          <a
+            class="btn far fa-trash-alt"
+            v-on:click="onDeleteBtnClick(props.row.originalIndex)"
+          />
         </span>
         <span v-else>
           {{ props.formattedRow[props.column.field] }}
@@ -30,20 +34,20 @@ export default {
   name: "UsersTable",
 
   methods: {
-    ...mapActions(["fetchUsers"]),
-    async loadUsers() {
-      await this.fetchUsers();
-      this.rows = this.getUsers;
-    },
+    ...mapActions(["fetchUsers", "deleteUser"]),
     onEditBtnClick(ind) {
       this.$emit("setUserForm", {
-        id: this.rows[ind].id,
-        name: this.rows[ind].name,
-        surname: this.rows[ind].surname,
-        phoneNumber: this.rows[ind].phoneNumber,
-        email: this.rows[ind].email,
-        address: this.rows[ind].address,
+        id: this.$refs.usersTable.rows[ind].id,
+        name: this.$refs.usersTable.rows[ind].name,
+        surname: this.$refs.usersTable.rows[ind].surname,
+        phoneNumber: this.$refs.usersTable.rows[ind].phoneNumber,
+        email: this.$refs.usersTable.rows[ind].email,
+        address: this.$refs.usersTable.rows[ind].address,
       });
+    },
+    async onDeleteBtnClick(ind) {
+      var response = await this.deleteUser(this.$refs.usersTable.rows[ind].id);
+      this.$emit("setResponseMessage", response);
     },
     rowStyleClassFn() {
       return "VGT-row";
@@ -53,7 +57,7 @@ export default {
   computed: mapGetters(["getUsers"]),
 
   created() {
-    this.loadUsers();
+    this.fetchUsers();
   },
 
   components: {
@@ -63,7 +67,7 @@ export default {
   data() {
     return {
       columns: [
-        { label: "ID", field: "id" },
+        { label: "ID", field: "id", type: "number" },
         { label: "Name", field: "name" },
         { label: "Surname", field: "surname" },
         { label: "Phone Number", field: "phoneNumber" },
@@ -75,7 +79,6 @@ export default {
           tdClass: "vgt-center-align",
         },
       ],
-      rows: [],
     };
   },
   mounted() {

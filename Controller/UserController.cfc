@@ -226,9 +226,28 @@
 	</cffunction>
 	
 	<cffunction name="deleteUser" access="remote" >
-		<cfargument name="id" type="string" required="true" >
-		
-		<cfreturn usersDAO.deleteUser(arguments.id)>
+		<cfargument name="id" type="string" default="" >
+
+<cfheader statusCode="400" statusText="asd">
+		<cfset var req = GetHttpRequestData()>
+		<cfif isDefined("req.content")>
+			<cfset var data = deserializeJson(req.content)>
+			<cfif isDefined("data.id")>
+				<cfset arguments.id = data.id>
+			</cfif>
+		</cfif>
+		<cfset check = checkInput("id", arguments.id)>
+		<cfif check EQ true>
+			<cfset user = usersDAO.getUser(arguments.id)>
+			<cfif isDefined("user")>
+				<cfset usersDAO.deleteUser(arguments.id)>
+				<cfheader statusCode="201" statusText="user with id: #arguments.id# deleted successfully">
+			<cfelse>
+				<cfheader statusCode="400" statusText="user with that id does not exist">
+			</cfif>
+		<cfelse>
+			<cfheader statusCode="400" statusText="#check#">
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getUsers" access="remote" returnFormat="json" httpmethod="GET">

@@ -2,10 +2,18 @@
   <div id="app">
     <div class="container">
       <div class="form">
-        <UserForm ref="formComponent" />
+        <UserForm
+          ref="formComponent"
+          v-on:setResponseMessage="setResponseMessage"
+        />
+        <ResponseMessageBox ref="responseMessageBox" />
       </div>
       <div class="table">
-        <UsersTable v-on:setUserForm="setUserForm" />
+        <UsersTable
+          ref="usersTableComponent"
+          v-on:setUserForm="setUserForm"
+          v-on:setResponseMessage="setResponseMessage"
+        />
       </div>
     </div>
   </div>
@@ -14,16 +22,21 @@
 <script>
 import UserForm from "./components/UserForm.vue";
 import UsersTable from "./components/UsersTable.vue";
+import ResponseMessageBox from "./components/ResponseMessageBox.vue";
 
 export default {
   name: "MainView",
   components: {
     UserForm,
     UsersTable,
+    ResponseMessageBox,
   },
   methods: {
     setUserForm: function (user) {
       this.$refs.formComponent.setUserForm(user);
+    },
+    setResponseMessage: function (response) {
+      this.$refs.responseMessageBox.setResponseOutput(response);
     },
   },
 };

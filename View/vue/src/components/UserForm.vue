@@ -5,30 +5,30 @@
         <h3>User Form</h3>
         <div class="form-wrapper">
           <label>Name:</label>
-          <input v-model="name" type="text" class="form-control" />
+          <input v-model="user.name" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Surname:</label>
-          <input v-model="surname" type="text" class="form-control" />
+          <input v-model="user.surname" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Phone Number:</label>
-          <input v-model="phoneNumber" type="text" class="form-control" />
+          <input v-model="user.phoneNumber" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>E-mail: </label>
-          <input v-model="email" type="text" class="form-control" />
+          <input v-model="user.email" type="text" class="form-control" />
         </div>
         <div class="form-wrapper">
           <label>Address: </label>
-          <input v-model="address" type="text" class="form-control" />
+          <input v-model="user.address" type="text" class="form-control" />
         </div>
         <div class="btn-wrapper">
-          <button id="userFormSubmitBtn" type="submit" value="Create">
+          <button ref="userFormSubmitBtn" type="submit" value="Create">
             Create
           </button>
           <button
-            id="userFormClearBtn"
+            ref="userFormClearBtn"
             type="reset"
             value="Clear"
             v-on:click="resetForm"
@@ -49,48 +49,45 @@ export default {
   data() {
     return {
       selectedID: -1,
-      name: "",
-      surname: "",
-      phoneNumber: "",
-      email: "",
-      address: "",
+      user: this.newUser(),
+      responseTxt: "",
     };
   },
   methods: {
+    newUser() {
+      return { name: "", surname: "", phoneNumber: "", email: "", address: "" };
+    },
+
     ...mapActions(["addUser", "updateUser"]),
-    onUserFormSubmit(e) {
+    async onUserFormSubmit(e) {
       e.preventDefault();
-      var btnText = document.getElementById("userFormSubmitBtn").innerText;
+      var btnText = this.$refs.userFormSubmitBtn.innerText;
+
       if (btnText.toLowerCase() == "create") {
-        this.addUser({
-          name: this.name,
-          surname: this.surname,
-          phoneNumber: this.phoneNumber,
-          email: this.email,
-          address: this.address,
-        });
+        var response = await this.addUser(this.user);
+        this.$emit("setResponseMessage", response);
+        if (response.status == 201) this.resetForm();
       } else if (btnText.toLowerCase() == "update") {
-        console.log("Not implemented");
+        response = await this.updateUser({
+          id: this.selectedID,
+          name: this.user.name,
+          surname: this.user.surname,
+          phoneNumber: this.user.phoneNumber,
+          email: this.user.email,
+          address: this.user.address,
+        });
+        this.$emit("setResponseMessage", response);
       }
     },
     setUserForm(user) {
-      this.name = user.name;
-      this.surname = user.surname;
-      this.phoneNumber = user.phoneNumber;
-      this.email = user.email;
-      this.address = user.address;
-
+      this.user = user;
       this.selectedID = user.id;
-      document.getElementById("userFormSubmitBtn").innerText = "Update";
+      this.$refs.userFormSubmitBtn.innerText = "Update";
     },
     resetForm() {
       this.selectedID = -1;
-      this.name = "";
-      this.surname = "";
-      this.phoneNumber = "";
-      this.email = "";
-      this.address = "";
-      document.getElementById("userFormSubmitBtn").innerText = "Create";
+      this.user = this.newUser();
+      this.$refs.userFormSubmitBtn.innerText = "Create";
     },
   },
 };
@@ -131,7 +128,6 @@ button {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  height: 100%;
   padding-top: 60px;
 }
 
