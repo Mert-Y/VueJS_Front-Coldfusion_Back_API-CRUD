@@ -1,29 +1,27 @@
 <template>
-  <div>
-    <vue-good-table
-      ref="usersTable"
-      :columns="columns"
-      :rows="getUsers"
-      :row-style-class="rowStyleClassFn"
-      styleClass="vgt-table striped bordered"
-    >
-      <template slot="table-row" slot-scope="props">
-        <span class="actions" v-if="props.column.field == 'actions'">
-          <a
-            class="btn fas fa-edit"
-            v-on:click="onEditBtnClick(props.row.originalIndex)"
-          />
-          <a
-            class="btn far fa-trash-alt"
-            v-on:click="onDeleteBtnClick(props.row.originalIndex)"
-          />
-        </span>
-        <span v-else>
-          {{ props.formattedRow[props.column.field] }}
-        </span>
-      </template>
-    </vue-good-table>
-  </div>
+  <vue-good-table
+    ref="usersTable"
+    :columns="columns"
+    :rows="getUsers"
+    :row-style-class="rowStyleClassFn"
+    styleClass="vgt-table striped bordered"
+  >
+    <template slot="table-row" slot-scope="props">
+      <span class="actions" v-if="props.column.field == 'actions'">
+        <a
+          class="btn fas fa-edit"
+          v-on:click="onEditBtnClick(props.row.originalIndex)"
+        />
+        <a
+          class="btn far fa-trash-alt"
+          v-on:click="onDeleteBtnClick(props.row.originalIndex)"
+        />
+      </span>
+      <span v-else>
+        {{ props.formattedRow[props.column.field] }}
+      </span>
+    </template>
+  </vue-good-table>
 </template>
 
 <script>

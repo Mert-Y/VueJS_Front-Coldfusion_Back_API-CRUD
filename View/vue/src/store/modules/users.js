@@ -40,20 +40,20 @@ export default {
         });
       return response;
     },
+
     async updateUser({ commit, state }, user) {
-      //Implement later
       var response = await axios
         .post(state.API.VUE_APP_USER_API + "?method=updateUser", user)
         .then(function(response) {
-          user.id = response.headers.userid;
-          commit("newUser", user);
-          return response.statusText;
+          commit("updateUser", user);
+          return response;
         })
         .catch(function(error) {
-          return error.response.statusText;
+          return error.response;
         });
       return response;
     },
+
     async deleteUser({ commit, state }, id) {
       var response = await axios
         .post(state.API.VUE_APP_USER_API + "?method=deleteUser", { id })
@@ -70,6 +70,12 @@ export default {
 
   mutations: {
     setUsers: (state, users) => (state.users = users),
+    updateUser: (state, user) => {
+      var ind = state.users.findIndex((usr) => usr.id == user.id);
+      if (ind != -1) {
+        state.users.splice(ind, 1, user);
+      }
+    },
     newUser: (state, user) => {
       state.users.push(user);
     },

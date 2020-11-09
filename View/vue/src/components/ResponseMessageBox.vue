@@ -19,7 +19,7 @@ export default {
         this.$refs.responseBox.style.color = "green";
         this.clearResponseOutput(3000);
       } else {
-        this.$refs.responseBox.style.color = "red";
+        this.$refs.responseBox.style.color = "rgb(255, 50, 80)";
         this.clearResponseOutput(5000);
       }
     },
@@ -40,5 +40,6 @@ export default {
 .response-box {
   padding: 10px;
   font-size: 18px;
+  text-shadow: 1px 1px black;
 }
 </style>

@@ -62,22 +62,16 @@ export default {
     async onUserFormSubmit(e) {
       e.preventDefault();
       var btnText = this.$refs.userFormSubmitBtn.innerText;
-
+      var response = "";
       if (btnText.toLowerCase() == "create") {
-        var response = await this.addUser(this.user);
-        this.$emit("setResponseMessage", response);
+        response = await this.addUser(this.user);
         if (response.status == 201) this.resetForm();
       } else if (btnText.toLowerCase() == "update") {
-        response = await this.updateUser({
-          id: this.selectedID,
-          name: this.user.name,
-          surname: this.user.surname,
-          phoneNumber: this.user.phoneNumber,
-          email: this.user.email,
-          address: this.user.address,
-        });
-        this.$emit("setResponseMessage", response);
+        var user = this.user;
+        user.id = this.selectedID;
+        response = await this.updateUser(user);
       }
+      this.$emit("setResponseOutput", response);
     },
     setUserForm(user) {
       this.user = user;
@@ -147,6 +141,7 @@ button {
 .form-wrapper label {
   margin-bottom: 9px;
   display: block;
+  text-shadow: 1px 1px grey;
 }
 
 .form-control {
@@ -156,7 +151,7 @@ button {
   height: 40px;
   padding: 0 20px;
   border-radius: 20px;
-  background: none;
+  background: rgb(144, 151, 151);
 }
 .form-control:focus {
   border: 1px solid #ae3c33;

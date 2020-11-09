@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
+  <div id="app" class="image">
     <div class="container">
       <div class="form">
         <UserForm
           ref="formComponent"
-          v-on:setResponseMessage="setResponseMessage"
+          v-on:setResponseOutput="setResponseOutput"
         />
         <ResponseMessageBox ref="responseMessageBox" />
       </div>
@@ -12,7 +12,7 @@
         <UsersTable
           ref="usersTableComponent"
           v-on:setUserForm="setUserForm"
-          v-on:setResponseMessage="setResponseMessage"
+          v-on:setResponseOutput="setResponseOutput"
         />
       </div>
     </div>
@@ -35,7 +35,7 @@ export default {
     setUserForm: function (user) {
       this.$refs.formComponent.setUserForm(user);
     },
-    setResponseMessage: function (response) {
+    setResponseOutput: function (response) {
       this.$refs.responseMessageBox.setResponseOutput(response);
     },
   },
@@ -45,6 +45,10 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+}
+.image {
+  background-image: url(./assets/main-background.jpg);
+  background-size: cover;
 }
 .container {
   display: flex;

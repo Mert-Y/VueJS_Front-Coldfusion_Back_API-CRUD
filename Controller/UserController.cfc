@@ -227,8 +227,7 @@
 	
 	<cffunction name="deleteUser" access="remote" >
 		<cfargument name="id" type="string" default="" >
-
-<cfheader statusCode="400" statusText="asd">
+		
 		<cfset var req = GetHttpRequestData()>
 		<cfif isDefined("req.content")>
 			<cfset var data = deserializeJson(req.content)>
