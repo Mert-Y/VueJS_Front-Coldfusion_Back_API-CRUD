@@ -273,7 +273,7 @@
 	<cffunction  name="checkInput" returnType="any">
 		<cfargument name="inputType" type="string">
 		<cfargument name="input" type="string">
-		<cfif isDefined("input") AND arguments.input NEQ "">
+		<cfif isDefined("input") AND arguments.input NEQ "" AND replace("#arguments.input#"," ","","all") NEQ "">
 			<cfswitch expression="#inputType#">
 				<cfcase value="id">
 					<cfif isValid("integer", arguments.input)>
