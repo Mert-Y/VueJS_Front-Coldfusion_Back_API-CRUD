@@ -44,8 +44,12 @@ export default {
       });
     },
     async onDeleteBtnClick(ind) {
-      var response = await this.deleteUser(this.$refs.usersTable.rows[ind].id);
-      this.$emit("setResponseMessage", response);
+      var id = this.$refs.usersTable.rows[ind].id;
+      var response = await this.deleteUser(id);
+      this.$emit("setResponseOutput", response);
+      if (response.status == 201) {
+        this.$emit("onDeletedFromTable", id);
+      }
     },
     rowStyleClassFn() {
       return "VGT-row";

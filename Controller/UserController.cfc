@@ -124,15 +124,20 @@
 		<cfset userToBeUpdated = getUser(arguments.id)>
 
 		<cfif isDefined("userToBeUpdated")>
-			<cfset var performUpdate = false>
+			<cfset var performUpdate = true>
+			<cfset var totalInputCheckCnt = 5>
+			<cfset var equalInputCnt = 0>
 			<cfset var checkReturnStr = "">
+			
 			<cfset check = checkInput("name", arguments.name)>
 			<cfif check EQ true>
 				<cfif userToBeUpdated.getName() NEQ arguments.name>
 					<cfset userToBeUpdated.setName(arguments.name)>
-					<cfset performUpdate = true>
+				<cfelse>
+					<cfset equalInputCnt++>
 				</cfif>
 			<cfelse>
+				<cfset performUpdate = false>
 				<cfset checkReturnStr = check>
 			</cfif>
 
@@ -140,9 +145,11 @@
 			<cfif check EQ true>
 				<cfif userToBeUpdated.getSurname() NEQ arguments.surname>
 					<cfset userToBeUpdated.setSurname(arguments.surname)>
-					<cfset performUpdate = true>
+				<cfelse>
+					<cfset equalInputCnt++>
 				</cfif>
 			<cfelse>
+				<cfset performUpdate = false>
 				<cfif checkReturnStr EQ "">
 					<cfset checkReturnStr = check>
 				<cfelse>
@@ -154,9 +161,11 @@
 			<cfif check EQ true>
 				<cfif userToBeUpdated.getPhoneNumber() NEQ arguments.phoneNumber>
 					<cfset userToBeUpdated.setPhoneNumber(arguments.phoneNumber)>
-					<cfset performUpdate = true>
+				<cfelse>
+					<cfset equalInputCnt++>
 				</cfif>
 			<cfelse>
+				<cfset performUpdate = false>
 				<cfif checkReturnStr EQ "">
 					<cfset checkReturnStr = check>
 				<cfelse>
@@ -168,9 +177,11 @@
 			<cfif check EQ true>
 				<cfif userToBeUpdated.getEmail() NEQ arguments.email>
 					<cfset userToBeUpdated.setEmail(arguments.email)>
-					<cfset performUpdate = true>
+				<cfelse>
+					<cfset equalInputCnt++>
 				</cfif>
 			<cfelse>
+				<cfset performUpdate = false>
 				<cfif checkReturnStr EQ "">
 					<cfset checkReturnStr = check>
 				<cfelse>
@@ -182,9 +193,11 @@
 			<cfif check EQ true>
 				<cfif userToBeUpdated.getAddress() NEQ arguments.address>
 					<cfset userToBeUpdated.setAddress(arguments.address)>
-					<cfset performUpdate = true>
+				<cfelse>
+					<cfset equalInputCnt++>
 				</cfif>
 			<cfelse>
+				<cfset performUpdate = false>
 				<cfif checkReturnStr EQ "">
 					<cfset checkReturnStr = check>
 				<cfelse>
@@ -192,11 +205,15 @@
 				</cfif>
 			</cfif>
 			
-			<cfif performUpdate>
+			<cfif performUpdate AND equalInputCnt NEQ totalInputCheckCnt>
 				<cfset usersDAO.updateUser(arguments.id)>
-				<cfheader statusCode="201" statusText="Successfully updated User">
+				<cfheader statusCode="201" statusText="Successfully updated User with id: #arguments.id#">
 			<cfelse>
-				<cfheader statusCode="400" statusText="At least one property needs to be provided and needs to be different">
+				<cfif checkReturnStr EQ "">
+					<cfheader statusCode="400" statusText="At least one property needs to be provided and needs to be different from it's old value">
+				<cfelse>
+					<cfheader statusCode="400" statusText="#checkReturnStr#">
+				</cfif>
 			</cfif>
 		</cfif>
 	</cffunction>
@@ -218,7 +235,7 @@
 			<cfif isDefined("user")>
 				<cfreturn user>
 			<cfelse>
-				<cfheader statusCode="400" statusText="user with that id does not exist">
+				<cfheader statusCode="400" statusText="User with that id does not exist">
 			</cfif>
 		<cfelse>
 			<cfheader statusCode="400" statusText="#check#">
@@ -240,9 +257,9 @@
 			<cfset user = usersDAO.getUser(arguments.id)>
 			<cfif isDefined("user")>
 				<cfset usersDAO.deleteUser(arguments.id)>
-				<cfheader statusCode="201" statusText="user with id: #arguments.id# deleted successfully">
+				<cfheader statusCode="201" statusText="User with id: #arguments.id# deleted successfully">
 			<cfelse>
-				<cfheader statusCode="400" statusText="user with that id does not exist">
+				<cfheader statusCode="400" statusText="User with that id does not exist">
 			</cfif>
 		<cfelse>
 			<cfheader statusCode="400" statusText="#check#">
@@ -256,25 +273,24 @@
 	<cffunction  name="checkInput" returnType="any">
 		<cfargument name="inputType" type="string">
 		<cfargument name="input" type="string">
-
-		<cfif isDefined("input") AND input NEQ "">
+		<cfif isDefined("input") AND arguments.input NEQ "">
 			<cfswitch expression="#inputType#">
 				<cfcase value="id">
-					<cfif isValid("integer", input)>
+					<cfif isValid("integer", arguments.input)>
 						<cfreturn true>
 					<cfelse>
 						<cfreturn "ID is not valid">
 					</cfif>
 				</cfcase>
 				<cfcase value="phoneNumber">
-					<cfif isValid("telephone", input)>
+					<cfif isValid("telephone", arguments.input)>
 						<cfreturn true>
 					<cfelse>
 						<cfreturn "Phone Number is not valid">
 					</cfif>
 				</cfcase>
 				<cfcase value="email">
-					<cfif isValid("email", input)>
+					<cfif isValid("email", arguments.input)>
 						<cfreturn true>
 					<cfelse>
 						<cfreturn "E-Mail is not valid">
@@ -285,6 +301,11 @@
 				</cfdefaultcase>
 			</cfswitch>
 		</cfif>
-		<cfreturn "#inputType# cannot be empty">
+		<cfreturn "#uCaseFirstLetter(arguments.inputType)# cannot be empty">
+	</cffunction>
+
+	<cffunction  name="uCaseFirstLetter" returnType="string">
+		<cfargument name="string" type="string">
+		<cfreturn uCase(left(arguments.string, 1 )) & right(arguments.string, len(arguments.string) - 1 )>
 	</cffunction>
 </cfcomponent>

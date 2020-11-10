@@ -13,6 +13,7 @@
           ref="usersTableComponent"
           v-on:setUserForm="setUserForm"
           v-on:setResponseOutput="setResponseOutput"
+          v-on:onDeletedFromTable="onDeletedFromTable"
         />
       </div>
     </div>
@@ -32,11 +33,14 @@ export default {
     ResponseMessageBox,
   },
   methods: {
-    setUserForm: function (user) {
+    setUserForm: function(user) {
       this.$refs.formComponent.setUserForm(user);
     },
-    setResponseOutput: function (response) {
+    setResponseOutput: function(response) {
       this.$refs.responseMessageBox.setResponseOutput(response);
+    },
+    onDeletedFromTable: function(id) {
+      this.$refs.formComponent.onDeletedFromTable(id);
     },
   },
 };

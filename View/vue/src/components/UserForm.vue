@@ -67,7 +67,7 @@ export default {
         response = await this.addUser(this.user);
         if (response.status == 201) this.resetForm();
       } else if (btnText.toLowerCase() == "update") {
-        var user = this.user;
+        var user = { ...this.user };
         user.id = this.selectedID;
         response = await this.updateUser(user);
       }
@@ -82,6 +82,11 @@ export default {
       this.selectedID = -1;
       this.user = this.newUser();
       this.$refs.userFormSubmitBtn.innerText = "Create";
+    },
+    onDeletedFromTable(id) {
+      if (this.selectedID == id) {
+        this.resetForm();
+      }
     },
   },
 };
