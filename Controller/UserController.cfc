@@ -210,7 +210,7 @@
 				<cfheader statusCode="201" statusText="Successfully updated User with id: #arguments.id#">
 			<cfelse>
 				<cfif checkReturnStr EQ "">
-					<cfheader statusCode="400" statusText="At least one property needs to be provided and needs to be different from it's old value">
+					<cfheader statusCode="400" statusText="At least one of the values need to be different from it's old value">
 				<cfelse>
 					<cfheader statusCode="400" statusText="#checkReturnStr#">
 				</cfif>
