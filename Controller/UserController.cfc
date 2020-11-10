@@ -1,5 +1,5 @@
 <cfcomponent rest="true">
-	<cfobject type="component" name="usersDAO" component="workCube-Homework1-CRUD.DAO.UserDAO">
+	<cfobject type="component" name="usersDAO" component="VueJS_Front-Coldfusion_Back_API-CRUD.DAO.UserDAO">
 	
 	<cffunction name="addUser" access="remote" httpmethod="POST">
 		<cfargument name="name" type="string" default="">

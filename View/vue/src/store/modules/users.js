@@ -7,9 +7,9 @@ export default {
     users: [],
     API: {
       VUE_APP_BASE_API:
-        "http://localhost:8500/WorkCube-Homework1-CRUD/Controller",
+        "http://localhost:8500/VueJS_Front-Coldfusion_Back_API-CRUD/Controller",
       VUE_APP_USER_API:
-        "http://localhost:8500/WorkCube-Homework1-CRUD/Controller" +
+        "http://localhost:8500/VueJS_Front-Coldfusion_Back_API-CRUD/Controller" +
         "/UserController.cfc",
     },
   },

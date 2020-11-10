@@ -1,15 +1,15 @@
 <cfcomponent>
-	<cfset this.name = "WorkCube-Homework1-CRUD">
+	<cfset this.name = "VueJS_Front-Coldfusion_Back_API-CRUD">
 	<cfset this.sessionManagement = "true">
 	<cfset this.sessionTimeout = "#CreateTimeSpan(0, 0, 60, 0)#">
 	<cfset this.applicationTimeout = "#CreateTimeSpan(10, 0, 0, 0)#">
-	<cfset this.datasource = "workCube-Homework1-CRUD-DSN">
+	<cfset this.datasource = "vueJS_Front-Coldfusion_Back_API-CRUD-DSN">
 	<cfset this.ormenabled = "true">
 	<cfset this.ormSettings = { autoGenMap=true, dbcreate = "dropcreate"}>
 	
 	<cffunction name="onApplicationStart" >
 		<cfset ormreload()>
-		<cfobject type="component" name="users" component="workCube-Homework1-CRUD.DAO.UserDAO">
+		<cfobject type="component" name="users" component="VueJS_Front-Coldfusion_Back_API-CRUD.DAO.UserDAO">
 		<cfset users.addUser("Zakk", "Atkins", "5236854521", "zakk@gmail.com", "address")>
 		<cfset users.addUser("Macaulay", "Sharples", "9535426851", "sharples@hotmail.com", "address2")>
 		<cfset users.addUser("Betty", "Heaton", "4578952141", "betty.heaton@gmail.com", "address3")>
